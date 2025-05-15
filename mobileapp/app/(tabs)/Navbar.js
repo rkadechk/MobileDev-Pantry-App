@@ -1,91 +1,64 @@
-// components/Navbar.js or app/(tabs)/Navbar.js
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { useState } from 'react';
+import { FontAwesome, MaterialIcons, Entypo } from '@expo/vector-icons';
 
-export default function Navbar() {
+const Navbar = () => {
   const router = useRouter();
-  const [expiringItems, setExpiringItems] = useState(['Milk', 'Eggs']);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const expiringItems = ['Milk', 'Eggs']; // Hardcoded example alerts
 
   return (
-    <View style={styles.navbar}>
-      <TouchableOpacity onPress={() => router.push('/')}>
-        <Text style={styles.logo}>Pantry Pal</Text>
-      </TouchableOpacity>
+    <View style={styles.safeArea}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.navbar}
+      >
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/Home')}>
+          <Entypo name="home" size={20} color="white" />
+          <Text style={styles.navText}>Home</Text>
+        </TouchableOpacity>
 
-      <ScrollView horizontal contentContainerStyle={styles.navLinks}>
-        <TouchableOpacity style={styles.navLink} onPress={() => router.push('/GetItem')}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/GetItem')}>
+          <MaterialIcons name="inventory" size={20} color="white" />
           <Text style={styles.navText}>View Item</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navLink} onPress={() => router.push('/EditItem')}>
+
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/EditItem')}>
+          <FontAwesome name="edit" size={20} color="white" />
           <Text style={styles.navText}>Edit Item</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navLink} onPress={() => router.push('/Recipe')}>
-          <Text style={styles.navText}>Alert & Recipe</Text>
+
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/Recipe')}>
+          <FontAwesome name="bell" size={20} color={expiringItems.length > 0 ? 'red' : 'white'} />
+          <Text style={styles.navText}>Alerts</Text>
         </TouchableOpacity>
       </ScrollView>
-
-      <TouchableOpacity
-        style={styles.bellContainer}
-        onPress={() => router.push('/Recipe')}
-        onPressIn={() => setShowTooltip(true)}
-        onPressOut={() => setShowTooltip(false)}
-      >
-        <FontAwesome name="bell" size={24} color={expiringItems.length > 0 ? 'red' : 'white'} />
-        {showTooltip && expiringItems.length > 0 && (
-          <View style={styles.tooltip}>
-            <Text style={styles.tooltipText}>
-              Hey! {expiringItems.join(', ')} is expiring soon.
-            </Text>
-          </View>
-        )}
-      </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  safeArea: {
+    paddingTop: Platform.OS === 'ios' ? 40 : 20,
+    backgroundColor: '#222',
+    elevation: 4,
+    zIndex: 100,
+  },
   navbar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#333',
-    padding: 15,
+    paddingHorizontal: 10,
   },
-  logo: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  navLinks: {
-    flexDirection: 'row',
+  navItem: {
     alignItems: 'center',
-  },
-  navLink: {
-    marginHorizontal: 10,
+    marginHorizontal: 12,
   },
   navText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  bellContainer: {
-    position: 'relative',
-    padding: 5,
-  },
-  tooltip: {
-    position: 'absolute',
-    top: 30,
-    right: 0,
-    backgroundColor: '#333',
-    padding: 10,
-    borderRadius: 5,
-    width: 200,
-    zIndex: 10,
-  },
-  tooltipText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 12,
+    marginTop: 2,
   },
 });
+
+export default Navbar;
