@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface PantryItem {
@@ -10,15 +10,26 @@ interface PantryItem {
 
 const GetItem = () => {
   const [items, setItems] = useState<PantryItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Mock pantry data - Replace this with actual API call
-    const mockData: PantryItem[] = [
-      { id: '1', name: 'Milk', expiry: '2025-05-20' },
-      { id: '2', name: 'Eggs', expiry: '2025-05-19' },
-      { id: '3', name: 'Cheese', expiry: '2025-06-10' },
-    ];
-    setItems(mockData);
+    const fetchItems = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1/items'); // <-- Replace with your backend IP:port
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+        const data: PantryItem[] = await response.json();
+        setItems(data);
+      } catch (error) {
+        console.error('Failed to fetch pantry items:', error);
+        Alert.alert('Error', 'Failed to load pantry items. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
   }, []);
 
   const renderItem = ({ item }: { item: PantryItem }) => {
@@ -36,6 +47,14 @@ const GetItem = () => {
       </View>
     );
   };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
