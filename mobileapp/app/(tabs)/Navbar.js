@@ -5,7 +5,7 @@ import { FontAwesome, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 const Navbar = () => {
   const router = useRouter();
-  const expiringItems = ['Milk', 'Eggs']; // example alerts
+  const expiringItems = ['Milk']; // example alerts
   const [showModal, setShowModal] = useState(false);
 
   const handleBellPress = () => {
@@ -29,22 +29,31 @@ const Navbar = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.navbar}
         >
-          {/* Other nav items */}
+          {/* Home */}
           <TouchableOpacity style={styles.navItem} onPress={() => router.push('/Home')}>
             <Entypo name="home" size={20} color="white" />
             <Text style={styles.navText}>Home</Text>
           </TouchableOpacity>
 
+          {/* View Items */}
           <TouchableOpacity style={styles.navItem} onPress={() => router.push('/GetItem')}>
             <MaterialIcons name="inventory" size={20} color="white" />
-            <Text style={styles.navText}>View Item</Text>
+            <Text style={styles.navText}>View Items</Text>
           </TouchableOpacity>
 
+          {/* Add Item */}
+          <TouchableOpacity style={styles.navItem} onPress={() => router.push('/AddItem')}>
+            <FontAwesome name="plus" size={20} color="white" />
+            <Text style={styles.navText}>Add Item</Text>
+          </TouchableOpacity>
+
+          {/* Edit Item */}
           <TouchableOpacity style={styles.navItem} onPress={() => router.push('/EditItem')}>
             <FontAwesome name="edit" size={20} color="white" />
             <Text style={styles.navText}>Edit Item</Text>
           </TouchableOpacity>
 
+          {/* Alerts */}
           <TouchableOpacity style={styles.navItem} onPress={handleBellPress}>
             <FontAwesome
               name="bell"
