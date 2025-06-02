@@ -7,6 +7,7 @@ export default function AddItem() {
     name: '',
     category: '',
     quantity: '',
+    purchaseDate: '',       // <-- added here
     expirationDate: '',
   });
 
@@ -16,9 +17,15 @@ export default function AddItem() {
 
   const handleSubmit = async () => {
     try {
-      await axios.post('http://192.168.254.14:5000/add-item', item);
+      // Optional: convert quantity to number here before sending
+      const payload = {
+        ...item,
+        quantity: Number(item.quantity),
+      };
+
+      await axios.post('http://192.168.254.14:5000/add-item', payload);
       Alert.alert('Success', 'Item added successfully');
-      setItem({ name: '', category: '', quantity: '', expirationDate: '' });
+      setItem({ name: '', category: '', quantity: '', purchaseDate: '', expirationDate: '' });
     } catch (error) {
       Alert.alert('Error', 'Failed to add item');
     }
@@ -27,10 +34,37 @@ export default function AddItem() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Add Grocery Item</Text>
-      <TextInput style={styles.input} placeholder="Name" value={item.name} onChangeText={(text) => handleChange('name', text)} />
-      <TextInput style={styles.input} placeholder="Category" value={item.category} onChangeText={(text) => handleChange('category', text)} />
-      <TextInput style={styles.input} placeholder="Quantity" value={item.quantity} onChangeText={(text) => handleChange('quantity', text)} />
-      <TextInput style={styles.input} placeholder="Expiration Date (YYYY-MM-DD)" value={item.expirationDate} onChangeText={(text) => handleChange('expirationDate', text)} />
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        value={item.name}
+        onChangeText={(text) => handleChange('name', text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Category"
+        value={item.category}
+        onChangeText={(text) => handleChange('category', text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Quantity"
+        keyboardType="numeric"
+        value={item.quantity}
+        onChangeText={(text) => handleChange('quantity', text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Purchase Date (YYYY-MM-DD)"
+        value={item.purchaseDate}
+        onChangeText={(text) => handleChange('purchaseDate', text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Expiration Date (YYYY-MM-DD)"
+        value={item.expirationDate}
+        onChangeText={(text) => handleChange('expirationDate', text)}
+      />
       <Button title="Add Item" onPress={handleSubmit} />
     </ScrollView>
   );
