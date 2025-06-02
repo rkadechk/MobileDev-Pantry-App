@@ -23,7 +23,7 @@ export default function AddItem() {
         quantity: Number(item.quantity),
       };
 
-      await axios.post('http://192.168.254.14:5000/add-item', payload);
+      await axios.post('http://1.1.1.11:5000/add-item', payload);
       Alert.alert('Success', 'Item added successfully');
       setItem({ name: '', category: '', quantity: '', purchaseDate: '', expirationDate: '' });
     } catch (error) {

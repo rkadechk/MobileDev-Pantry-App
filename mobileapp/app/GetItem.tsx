@@ -6,7 +6,7 @@ export default function GetItem() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios.get('http://192.168.254.14:5000/getItems')
+    axios.get('http://1.1.1.11:5000/getItems')
       .then((response) => setItems(response.data))
       .catch((error) => console.error('Error fetching items:', error));
   }, []);
