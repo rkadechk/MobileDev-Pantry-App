@@ -22,8 +22,8 @@ const MONGO_URI = 'mongodb+srv://Neha:Neha123@pantrycluster.gogalqv.mongodb.net/
 mongoose.connect(MONGO_URI, {
   dbName: 'pantryDB',
 })
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error(' MongoDB connection error:', err));
 
 // Define Item schema with validation and correct data types
 const itemSchema = new mongoose.Schema({
@@ -90,5 +90,5 @@ app.get('/getItems', async (req, res) => {
 
 // Start server, listening on all network interfaces so mobile devices can connect
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running at http://0.0.0.0:${PORT}`);
+  console.log(` Server running at http://0.0.0.0:${PORT}`);
 });
